@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<link rel="stylesheet" type="text/css" href="{% static 'blog/main.css' %}">
+	
+
+	{% if title %}
+		<title>IdeaBoat - {{ title }}</title>
+	{% else %}
+		<title>IdeaBoat</title>
+	{% endif %}
+	<style>
+		body {
+			background: rgb(220,220,220)
+			;
+
+			
+		  
+			color: #000000;
+			margin-top: 5rem;
+		  }
+		.dark-mode {
+			background: rgb(31,31,31);
+		
+			
+		}
+		.switch {
+			right: 2rem;
+			top:0.4rem;
+			position: relative;
+			display: inline-block;
+			width: 50px;
+			height: 24px;
+		  }
+		  
+		  /* Hide default HTML checkbox */
+		  .switch input {
+			opacity: 0;
+			width: 0;
+			height: 0;
+		  }
+		  
+		  /* The slider */
+		  .slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			right: 4px;
+			background-color: #ccc;
+			-webkit-transition: .4s;
+			transition: .4s;
+		  }
+		  
+		  .slider:before {
+			position: absolute;
+			content: "";
+			height: 25px;
+			width: 23px;
+			
+			
+			background-color: #5b6467;
+			-webkit-transition: .4s;
+			transition: .4s;
+		  }
+		  
+		  input:checked + .slider {
+			background-color: #000;
+		  }
+		  
+		  input:focus + .slider {
+			box-shadow: 0 0 1px #2196F3;
+		  }
+		  
+		  input:checked + .slider:before {
+			-webkit-transform: translateX(26px);
+			-ms-transform: translateX(26px);
+			transform: translateX(26px);
+		  }
+		  
+		  /* Rounded sliders */
+		  .slider.round {
+			border-radius: 34px;
+		  }
+		  
+		  .slider.round:before {
+			border-radius: 50%;
+		  }
+		</style>
+</head>
+<body >
+	
+<script>
+	function myFunction() {
+	   var element = document.body;
+	   element.classList.toggle("dark-mode");
+	}
+	</script>
+	<header class="site-header">
+		<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+			<div class="container">
+				<a class="navbar-brand mr-4" href="{% url 'blog-home' %}">IdeaBoat</a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarToggle">
+					<div class="navbar-nav mr-auto">
+						<a class="nav-item nav-link" href="{% url 'blog-home' %}">Home</a>
+						<a class="nav-item nav-link" href="{% url 'blog-about' %}">About</a>
+
+
+
+
+					</div>
+					<!-- Navbar Right Side -->
+					<label class="switch">
+						<input type="checkbox"onchange="myFunction()">
+						<span class="slider round"></span>
+					  </label>
+					
+					
+
+
+					<div class="navbar-nav">
+						{% if user.is_authenticated %}
+
+							<a class="nav-item nav-link" href="{% url 'post-create' %}">New Idea?</a>
+							<a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+							<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+						{% else %}
+							<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+							<a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</nav>
+	</header>
+
+	
+	<main role="main" class="container ">
+		<div class="row">
+			<div class="col-md-8">
+				{% if messages %}
+					{% for message in messages %}
+						<div class="alert alert-{{ message.tags }}">
+							{{ message }}
+						</div>
+					{% endfor %}
+				{% endif %}
+				{% block content %}{% endblock %}
+			</div>
+			<div class="col-md-4"  style="position:fixed; right:60px;">
+				<div class="content-section">
+					<h3>Our Sidebar</h3>
+					<p class='text-muted'>u can put any information here u like.
+						<ul class="list-group">
+							<li class="list-group-item list-group-item-light"> trending Idea keyword extraction through nlp (mL)</li>
+							 <h3 style="color: green">Current top ideators</h3>
+							<li class="list-group-item list-group-item-light"> {% for i in leaderbod_list|slice:":5" %}
+								<h4 style="color: rgb(55, 0, 149)"><a class="mr-2" href="{% url 'user-posts' i.0 %}">{{ i.0 }}</a>   with ${{i.1}}00 Boats </h4>{% endfor %}</li>
+
+
+						</ul>
+					</p>
+				</div>
+			</div>
+		</div>
+	</main>
+
+
+</body>
+</html>

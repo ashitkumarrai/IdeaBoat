@@ -1,0 +1,105 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+	<article class="media content-section">
+		<a class="mr-2" href="#">
+			<img class="rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+		</a>
+		<div class="media-body">
+			<div class="article-metadata">
+				<a class="mr-2" href="{% url 'user-posts' object.author.username %}">{{ object.author }}</a>
+				<small class="text-muted" >{{ post.date_posted }} <i style="color: red;white-space: pre;" >{% for i in leaderbod_list %}{% if i.0 == post.author.username %}                                  ${{i.1}}00 Boats{% endif %}{% endfor %}</i></small>
+			</div>
+			<h2 class="article-title">{{ object.title }}</h2>
+			<p class="article-content">{{ object.body |urlize}}</p>
+			<!-- LIKES -->
+	<div>				
+			
+{% if user.is_authenticated %}
+<form action="{% url 'post-like' object.id %}" method="POST">
+  {% csrf_token %}
+
+  {% if post_is_liked %}
+  <button class="btn btn-secondary btn-sm mt-1 mb-1" style="background:red;" type="submit" name="post_id" value="{{object.id}}" class="btn btn-info">DownVote</button>
+  {% else %}
+  <button  class="btn btn-secondary btn-sm mt-1 mb-1"style="background:green;" type="submit" name="post_id" value="{{object.id}}" class="btn btn-info">UpVote</button>
+  {% endif %}
+  {% if object.author == user %}
+  <div style="display:inline;" >
+
+	<a  class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+	<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+  </div>
+{% endif %}
+
+</form>
+{% else %}
+<a class="btn btn-outline-info " href="{% url 'login' %}?next={{request.path}}">Log in to like comment this article!</a><br>
+{% endif %}
+<strong class="text-secondary ">{{ number_of_likes }} Upvote{{number_of_likes|pluralize }}</strong>
+
+
+
+<!-- LIKES ends and comment starts-->
+
+
+<!-- List of comments -->
+{% if comments %}
+<div class="row mt-5">
+  <div class="col-lg-6 offset-lg-3">
+	Comment{{ comments.count|pluralize }}
+	<span class="badge badge-dark ml-2">{{ comments.count }}</span>
+  </div>
+  {% for comment in comments %}
+  <div class="col-lg-6 offset-lg-3 mt-2">
+	<div class="card p-2">
+	  <div class="row">
+		<div class="col-12">
+			<img class="rounded-circle article-img" src="{{comment.img.image.url}}">
+		  <strong>{{ comment.name }}</strong> said
+		</div>
+		<div class="col-12">
+		  <p class="m-1 mt-3">{{comment.content|urlize }}</p>
+		  <p class="text-right text-muted"><small>{{ comment.created_on }}</small></p>
+		</div>
+	  </div>
+	</div>
+  </div>
+  {% endfor %}
+  
+</div>
+
+{% endif %}
+
+<!-- Form for the comment -->
+{% if user.is_authenticated %}
+<div class="row mt-5">
+  <div class="col-lg-6 offset-lg-3">
+	<h3>Leave a comment</h3>
+	<form method='POST'>
+	  {% csrf_token %}
+
+
+	  <div class="form-group">
+		
+		<textarea placeholder="please share your views on this idea..."class="form-control" id="id_content"
+		  name="content" rows="4"></textarea>
+	  </div>
+	  <button class="btn btn-primary ml-2" type="submit">Reply</button>
+	</form>
+  </div>
+</div>
+{% endif %}
+
+</div>
+
+
+{% endblock content %}
+
+
+
+<!--commmentt ends-->		
+
+	</article>
+
