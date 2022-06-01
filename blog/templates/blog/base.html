@@ -160,10 +160,10 @@
 			</div>
 			<div class="col-md-4"  style="position:fixed; right:60px;">
 				<div class="content-section">
-					<h3>Our Sidebar</h3>
-					<p class='text-muted'>u can put any information here u like.
+					<h3>Ideas won't work unless you do </h3>
+					<p class='text-muted'>Let your ideas and thoughts give you inspiration. All creativity comes from your imagination - you first imagine and then you create. 
 						<ul class="list-group">
-							<li class="list-group-item list-group-item-light"> trending Idea keyword extraction through nlp (mL)</li>
+							
 							 <h3 style="color: green">Current top ideators</h3>
 							<li class="list-group-item list-group-item-light"> {% for i in leaderbod_list|slice:":5" %}
 								<h4 style="color: rgb(55, 0, 149)"><a class="mr-2" href="{% url 'user-posts' i.0 %}">{{ i.0 }}</a>   with ${{i.1}}00 Boats </h4>{% endfor %}</li>
